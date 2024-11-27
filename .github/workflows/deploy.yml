@@ -38,8 +38,10 @@ jobs:
             --version 1.27 \
             --nodegroup-name app-nodes \
             --node-labels "role=app" \
-            --node-type t2.micro \
-            --nodes 1 
+            --node-type t2.medium \
+            --nodes 1 \
+            --nodes-min 1 \
+            --nodes-max 2
 
 #      # Etapa 5: Criar o grupo de nós para o PostgreSQL
 #      - name: Create Node Group for PostgreSQL
