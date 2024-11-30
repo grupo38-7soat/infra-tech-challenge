@@ -1,0 +1,21 @@
+name: Rabbit MQ Deployment
+
+on:
+  workflow_dispatch: # Permite executar manualmente o workflow
+
+env:
+  CLUSTER_NAME: "infra-tech-challenge"  # Nome do cluster EKS
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Set up Python 3.12
+        uses: actions/setup-python@v3
+        with:
+          python-version: "3.12"
+      - name: teste
+        run: |
+          ls
