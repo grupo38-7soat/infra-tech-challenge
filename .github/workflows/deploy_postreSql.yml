@@ -1,4 +1,4 @@
-name: PostreSql Deployment
+name: PostgreSQL Deployment
 
 on:
   workflow_dispatch: # Permite executar manualmente o workflow
