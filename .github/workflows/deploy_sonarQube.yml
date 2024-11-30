@@ -30,6 +30,11 @@ jobs:
           aws eks describe-cluster --name $CLUSTER_NAME --region ${{ secrets.AWS_REGION }} || exit 1
         continue-on-error: false  # Caso o cluster não exista, o workflow falha aqui
 
+      # Etapa 4: Configurar kubectl para interagir com o EKS
+      - name: Configure kubectl
+        run: |
+          aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name $CLUSTER_NAME
+
       # Etapa 4: Aplicar Kubernetes manifests
       - name: Apply Kubernetes manifests
         run: |
