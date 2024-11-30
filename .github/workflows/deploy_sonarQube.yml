@@ -1,4 +1,4 @@
-name: Rabbit MQ Deployment
+name: SonarQube Deployment
 
 on:
   workflow_dispatch: # Permite executar manualmente o workflow
@@ -33,4 +33,4 @@ jobs:
       # Etapa 4: Aplicar Kubernetes manifests
       - name: Apply Kubernetes manifests
         run: |
-          kubectl apply -f k8s/rabbitmq-kubernetes-template.yaml
+          kubectl apply -f k8s/sonarqube-kubernetes-template.yaml
