@@ -1,4 +1,4 @@
-name: PostgreSQL Deployment
+name: Order PostgreSQL Deployment
 
 on:
   workflow_dispatch: # Permite executar manualmente o workflow
