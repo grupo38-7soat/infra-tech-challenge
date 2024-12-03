@@ -14,9 +14,9 @@ metadata:
   labels:
     app: postgres
 data:
-  POSTGRES_USER: tech_challenge
-  POSTGRES_PASSWORD: tech_challenge_123
-  POSTGRES_DB: techchallengedb
+  POSTGRES_USER: ${ORDER_POSTGRES_USER}
+  POSTGRES_PASSWORD: ${ORDER_POSTGRES_PASSWORD}
+  POSTGRES_DB: ${ORDER_POSTGRES_DB}
 ---
 apiVersion: apps/v1
 kind: Deployment
