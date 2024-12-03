@@ -25,6 +25,15 @@ spec:
         app: rabbitmq
         environment: production
     spec:
+      affinity:
+        nodeAffinity:
+          requiredDuringSchedulingIgnoredDuringExecution:
+            nodeSelectorTerms:
+              - matchExpressions:
+                  - key: role
+                    operator: In
+                    values:
+                      - rabbitmq  # Nome do label do node
       containers:
       - name: rabbitmq
         image: rabbitmq:3-management
@@ -33,9 +42,9 @@ spec:
         - containerPort: 15672
         env:
         - name: RABBITMQ_DEFAULT_USER
-          value: admin
+          value: ${RABBITMQ_DEFAULT_USER}
         - name: RABBITMQ_DEFAULT_PASS
-          value: adminpassword
+          value: ${RABBITMQ_DEFAULT_PASS}
 ---
 apiVersion: v1
 kind: Service

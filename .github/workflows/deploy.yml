@@ -67,18 +67,18 @@ jobs:
             --nodes-min 1 \
             --nodes-max 2
 
-#      # Etapa 6: Criar o grupo de nós para RabbitMQ
-#      - name: Create Node Group for RabbitMQ
-#        run: |
-#          eksctl create nodegroup \
-#            --cluster $REPO_NAME \
-#            --name mq-nodes \
-#            --node-labels "role=rabbitmq" \
-#            --node-type t2.micro \
-#            --nodes 1 \
-#            --nodes-min 1 \
-#            --nodes-max 2
+      # Etapa 7: Criar o grupo de nós para RabbitMQ
+      - name: Create Node Group for RabbitMQ
+        run: |
+          eksctl create nodegroup \
+            --cluster $REPO_NAME \
+            --name mq-nodes \
+            --node-labels "role=rabbitmq" \
+            --node-type t2.medium \
+            --nodes 1 \
+            --nodes-min 1 \
+            --nodes-max 2
 
-      # Etapa 7: Verificar o status do cluster
+      # Etapa 8: Verificar o status do cluster
       - name: Verify Cluster Status
         run: eksctl get cluster --region ${{ secrets.AWS_REGION }}
