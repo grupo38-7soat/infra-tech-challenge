@@ -35,7 +35,19 @@ jobs:
         run: |
           aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name $CLUSTER_NAME
 
-      # Etapa 4: Aplicar Kubernetes manifests
+      # Etapa 5: Definir as variáveis de ambiente
+      - name: Set environment variables
+        run: |
+          echo "PAYMENT_POSTGRES_USER=${{ secrets.PAYMENT_POSTGRES_USER }}" >> $GITHUB_ENV
+          echo "PAYMENT_POSTGRES_PASSWORD=${{ secrets.PAYMENT_POSTGRES_PASSWORD }}" >> $GITHUB_ENV
+          echo "PAYMENT_POSTGRES_DB=${{ secrets.PAYMENT_POSTGRES_DB }}" >> $GITHUB_ENV
+
+      # Etapa 6: Substituir variáveis nos arquivos Kubernetes
+      - name: Substitute variables in deployment.yaml
+        run: |
+          envsubst < k8s/postgresql-payment-kubernetes-template.yaml > k8s/deployment-final.yaml
+
+      # Etapa 7: Aplicar Kubernetes manifests
       - name: Apply Kubernetes manifests
         run: |
-          kubectl apply -f k8s/postgresql-kubernetes-template.yaml
+          kubectl apply -f k8s/deployment-final.yaml
