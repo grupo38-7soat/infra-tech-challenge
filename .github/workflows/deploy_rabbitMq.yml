@@ -46,7 +46,7 @@ jobs:
         run: |
           envsubst < k8s/rabbitmq-kubernetes-template.yaml > k8s/deployment-final.yaml
 
-      # Etapa 4: Aplicar Kubernetes manifests
+      # Etapa 7: Aplicar Kubernetes manifests
       - name: Apply Kubernetes manifests
         run: |
           kubectl apply -f k8s/deployment-final.yaml
