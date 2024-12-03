@@ -47,8 +47,8 @@ jobs:
       - name: Create Node Group for PostgreSQL
         run: |
           eksctl create nodegroup \
-            --cluster $REPO_NAME-database-payment \
-            --name db-nodes \
+            --cluster $REPO_NAME \
+            --name db-payment-nodes \
             --node-labels "role=database-payment" \
             --node-type t2.medium \
             --nodes 1 \
