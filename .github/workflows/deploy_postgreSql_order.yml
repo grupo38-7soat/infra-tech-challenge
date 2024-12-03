@@ -7,8 +7,8 @@ env:
   CLUSTER_NAME: "infra-tech-challenge"  # Nome do cluster EKS
 
 jobs:
-  build:
-    name: Build and Test
+  ci:
+    name: Validate EKS
     runs-on: ubuntu-latest
 
     steps:
@@ -30,6 +30,12 @@ jobs:
           aws eks describe-cluster --name $CLUSTER_NAME --region ${{ secrets.AWS_REGION }} || exit 1
         continue-on-error: false  # Caso o cluster não exista, o workflow falha aqui
 
+  cd:
+    name: Deploy
+    runs-on: ubuntu-latest
+    needs: ci
+
+    steps:
       # Etapa 4: Configurar kubectl para interagir com o EKS
       - name: Configure kubectl
         run: |
