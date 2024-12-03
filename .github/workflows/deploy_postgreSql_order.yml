@@ -12,11 +12,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Etapa 1: Checkout do código
+      # Checkout do código
       - name: Checkout code
         uses: actions/checkout@v4
 
-      # Etapa 2: Configurar AWS CLI
+      # Configurar AWS CLI
       - name: Configure AWS CLI
         uses: aws-actions/configure-aws-credentials@v3
         with:
@@ -24,7 +24,7 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # Etapa 3: Verificar se o EKS já foi criado
+      # Verificar se o EKS já foi criado
       - name: Check if EKS cluster exists
         run: |
           aws eks describe-cluster --name $CLUSTER_NAME --region ${{ secrets.AWS_REGION }} || exit 1
@@ -36,24 +36,31 @@ jobs:
     needs: ci
 
     steps:
-      # Etapa 4: Configurar kubectl para interagir com o EKS
+      - name: Configure AWS CLI
+        uses: aws-actions/configure-aws-credentials@v3
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      # Configurar kubectl para interagir com o EKS
       - name: Configure kubectl
         run: |
           aws eks --region ${{ secrets.AWS_REGION }} update-kubeconfig --name $CLUSTER_NAME
 
-      # Etapa 5: Definir as variáveis de ambiente
+      # Definir as variáveis de ambiente
       - name: Set environment variables
         run: |
           echo "ORDER_POSTGRES_USER=${{ secrets.ORDER_POSTGRES_USER }}" >> $GITHUB_ENV
           echo "ORDER_POSTGRES_PASSWORD=${{ secrets.ORDER_POSTGRES_PASSWORD }}" >> $GITHUB_ENV
           echo "ORDER_POSTGRES_DB=${{ secrets.ORDER_POSTGRES_DB }}" >> $GITHUB_ENV
 
-      # Etapa 6: Substituir variáveis nos arquivos Kubernetes
+      # Substituir variáveis nos arquivos Kubernetes
       - name: Substitute variables in deployment.yaml
         run: |
           envsubst < k8s/postgresql-order-kubernetes-template.yaml > k8s/deployment-final.yaml
 
-      # Etapa 7: Aplicar Kubernetes manifests
+      # Aplicar Kubernetes manifests
       - name: Apply Kubernetes manifests
         run: |
           kubectl apply -f k8s/deployment-final.yaml
