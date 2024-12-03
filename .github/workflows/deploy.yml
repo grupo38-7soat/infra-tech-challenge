@@ -54,7 +54,19 @@ jobs:
             --nodes 1 \
             --nodes-min 1 \
             --nodes-max 2
-#
+
+      # Etapa 6: Criar o grupo de nós para o PostgreSQL
+      - name: Create Node Group for PostgreSQL
+        run: |
+          eksctl create nodegroup \
+            --cluster $REPO_NAME \
+            --name db-order-nodes \
+            --node-labels "role=database-order" \
+            --node-type t2.medium \
+            --nodes 1 \
+            --nodes-min 1 \
+            --nodes-max 2
+
 #      # Etapa 6: Criar o grupo de nós para RabbitMQ
 #      - name: Create Node Group for RabbitMQ
 #        run: |
