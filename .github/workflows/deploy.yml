@@ -9,7 +9,7 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-      # Etapa 1: Configurar credenciais da AWS
+      # Configurar credenciais da AWS
       - name: Configure AWS Credentials
         uses: aws-actions/configure-aws-credentials@v3
         with:
@@ -17,19 +17,19 @@ jobs:
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: ${{ secrets.AWS_REGION }}
 
-      # Etapa 2: Instalar eksctl
+      # Instalar eksctl
       - name: Install eksctl
         run: |
           curl --silent --location "https://github.com/weaveworks/eksctl/releases/latest/download/eksctl_$(uname -s)_amd64.tar.gz" | tar xz -C /tmp
           sudo mv /tmp/eksctl /usr/local/bin
           eksctl version
 
-      # Etapa 3: Extrair o nome do repositório
+      # Extrair o nome do repositório
       - name: Extract repository name
         id: repo-name
         run: echo "REPO_NAME=${GITHUB_REPOSITORY##*/}" >> $GITHUB_ENV
 
-      # Etapa 4: Criar o cluster EKS
+      # Criar o cluster EKS
       - name: Create EKS Cluster
         run: |
           eksctl create cluster \
@@ -43,7 +43,7 @@ jobs:
             --nodes-min 1 \
             --nodes-max 2
 
-      # Etapa 5: Criar o grupo de nós para o PostgreSQL
+      # Criar o grupo de nós para o PostgreSQL
       - name: Create Node Group for PostgreSQL
         run: |
           eksctl create nodegroup \
@@ -55,7 +55,7 @@ jobs:
             --nodes-min 1 \
             --nodes-max 2
 
-      # Etapa 6: Criar o grupo de nós para o PostgreSQL
+      # Criar o grupo de nós para o PostgreSQL
       - name: Create Node Group for PostgreSQL
         run: |
           eksctl create nodegroup \
@@ -67,7 +67,7 @@ jobs:
             --nodes-min 1 \
             --nodes-max 2
 
-      # Etapa 7: Criar o grupo de nós para RabbitMQ
+      # Criar o grupo de nós para RabbitMQ
       - name: Create Node Group for RabbitMQ
         run: |
           eksctl create nodegroup \
@@ -79,6 +79,6 @@ jobs:
             --nodes-min 1 \
             --nodes-max 2
 
-      # Etapa 8: Verificar o status do cluster
+      # Verificar o status do cluster
       - name: Verify Cluster Status
         run: eksctl get cluster --region ${{ secrets.AWS_REGION }}
